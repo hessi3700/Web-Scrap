@@ -1,4 +1,7 @@
-const API_BASE = (import.meta.env.VITE_API_BASE as string) || "";
+const API_BASE = ((import.meta.env.VITE_API_BASE as string) || "").replace(/\/+$/, "");
+
+/** True if the app was built without an API URL (requests would hit same origin and 404). */
+export const isApiConfigured = () => Boolean(API_BASE.trim());
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const url = path.startsWith("http") ? path : `${API_BASE}${path}`;
@@ -6,7 +9,17 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     ...options,
     headers: { "Content-Type": "application/json", ...options?.headers },
   });
-  if (!res.ok) throw new Error(await res.text().catch(() => res.statusText));
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    let msg = text;
+    try {
+      const j = JSON.parse(text) as { error?: string };
+      if (j?.error) msg = j.error;
+    } catch {
+      /* use text as-is */
+    }
+    throw new Error(msg || `Request failed (${res.status})`);
+  }
   return res.json() as Promise<T>;
 }
 

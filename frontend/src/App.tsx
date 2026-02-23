@@ -5,7 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Listings from "./pages/Listings";
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 60 * 1000, retry: 1 } },
+  defaultOptions: { queries: { staleTime: 60 * 1000, retry: 0 } },
 });
 
 function App() {

@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { isApiConfigured } from "../api/client";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -6,6 +7,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {!isApiConfigured() && (
+        <div className="bg-amber-500/20 border-b border-amber-500/40 px-4 py-2 text-center text-amber-200 text-sm">
+          API not configured. Set <strong>VITE_API_BASE</strong> (your Worker URL) in repo Secrets, then redeploy so the dashboard can load data.
+        </div>
+      )}
       <header className="border-b border-surface-700/60 bg-surface-900/95 backdrop-blur sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
