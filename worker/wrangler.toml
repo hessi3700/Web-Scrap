@@ -1,0 +1,19 @@
+name = "web-scrap-api"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+# Optional: set in dashboard or .dev.vars for local
+# INGEST_SECRET = "your-secret"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "web-scrap-db"
+# Use this UUID for local dev; replace with real ID from `wrangler d1 create` for deploy
+database_id = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+
+[env.production]
+name = "web-scrap-api"
+
+[env.production.vars]
+# INGEST_SECRET = "production-secret"

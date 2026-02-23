@@ -1,0 +1,39 @@
+# Python
+pipeline/.venv/
+pipeline/venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+.env
+.env.local
+
+# Node
+node_modules/
+frontend/dist/
+worker/dist/
+*.log
+.npm
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Wrangler
+worker/.dev.vars
+worker/wrangler.toml.local
+
+# Misc
+*.sqlite
+*.db
