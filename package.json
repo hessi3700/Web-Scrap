@@ -1,0 +1,16 @@
+{
+  "name": "web-scrap",
+  "private": true,
+  "description": "Web Scraper + Data Analysis Dashboard",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "deploy": "npm run deploy:worker && npm run deploy:pages",
+    "deploy:worker": "npm run deploy --prefix worker",
+    "deploy:pages": "node -e \"process.env.GITHUB_PAGES='1'; require('child_process').execSync('npm run build --prefix frontend', {stdio:'inherit', env:process.env})\" && npx gh-pages -d frontend/dist -b gh-pages",
+    "run:pipeline": "cd pipeline && pip install -q -r requirements-ci.txt && python run_scrape_and_sync.py",
+    "test:pipeline": "npm run run:pipeline"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
+  }
+}

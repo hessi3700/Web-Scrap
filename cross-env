@@ -1,0 +1,4 @@
+
+> web-scrap-dashboard@1.0.0 build
+> tsc -b && vite build
+

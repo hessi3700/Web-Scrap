@@ -1,0 +1,28 @@
+# Run pipeline on schedule: scrape and POST to Cloudflare Worker (no DB in CI)
+name: Run pipeline
+
+on:
+  schedule:
+    # Daily at 06:00 UTC
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  scrape-and-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install CI dependencies
+        run: pip install -r pipeline/requirements-ci.txt
+
+      - name: Run scrape and sync to Worker
+        env:
+          API_INGEST_URL: ${{ secrets.API_INGEST_URL }}
+          API_INGEST_SECRET: ${{ secrets.API_INGEST_SECRET }}
+          SCRAPE_BASE_URL: ${{ vars.SCRAPE_BASE_URL }}
+        run: python pipeline/run_scrape_and_sync.py

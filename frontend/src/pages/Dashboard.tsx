@@ -39,7 +39,11 @@ const chartOptions = {
     x: { grid: { color: "rgba(148, 163, 184, 0.1)" }, ticks: { color: "#94a3b8", maxRotation: 45 } },
     y: {
       grid: { color: "rgba(148, 163, 184, 0.1)" },
-      ticks: { color: "#94a3b8", callback: (v: unknown) => (typeof v === "number" ? `$${v >= 1000 ? (v / 1000).toFixed(0) + "k" : v}` : v) },
+      ticks: {
+        color: "#94a3b8",
+        callback: (v: number | string): string | number =>
+          typeof v === "number" ? (v >= 1000 ? `$${(v / 1000).toFixed(0)}k` : `$${v}`) : v,
+      },
     },
   },
 };
@@ -55,7 +59,7 @@ function useAreas() {
   return useQuery({ queryKey: ["areas"], queryFn: () => api.areas() });
 }
 
-function buildChartData(data: TrendPoint[]): { labels: string[]; datasets: { label: string; data: number[]; borderColor: string; backgroundColor: string; fill: boolean }[] } {
+function buildChartData(data: TrendPoint[]): { labels: string[]; datasets: { label: string; data: (number | null)[]; borderColor: string; backgroundColor: string; fill: boolean }[] } {
   const byDate = new Map<string, Map<string, number>>();
   const areas = new Set<string>();
   for (const p of data) {

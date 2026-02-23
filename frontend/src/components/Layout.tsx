@@ -38,7 +38,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <footer className="border-t border-surface-800 py-4 text-center text-surface-500 text-sm">
-        Data from ETL pipeline · API on Cloudflare Workers
+        <span>Data from ETL pipeline · API on Cloudflare Workers</span>
+        <span className="mx-2">·</span>
+        <span>Built by <a href="https://github.com/HessiKz" target="_blank" rel="noopener noreferrer" className="text-brand-400 hover:text-brand-300 transition-colors font-medium">HessiKz</a></span>
       </footer>
     </div>
   );
