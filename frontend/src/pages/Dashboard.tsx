@@ -109,13 +109,13 @@ export default function Dashboard() {
       </div>
 
       <div className="card p-4 sm:p-6">
-        <div className="flex flex-wrap items-center gap-4 mb-6">
-          <label className="flex items-center gap-2">
-            <span className="text-surface-400 text-sm">Area</span>
+        <div className="flex flex-wrap items-end gap-6 mb-6">
+          <label className="filter-label">
+            <span>Area</span>
             <select
               value={area}
               onChange={(e) => setArea(e.target.value)}
-              className="input w-auto min-w-[140px]"
+              className="select-field min-w-[160px]"
             >
               <option value="">All areas</option>
               {areas.map((a) => (
@@ -123,17 +123,17 @@ export default function Dashboard() {
               ))}
             </select>
           </label>
-          <label className="flex items-center gap-2">
-            <span className="text-surface-400 text-sm">Period</span>
+          <label className="filter-label">
+            <span>Period</span>
             <select
               value={days}
               onChange={(e) => setDays(Number(e.target.value))}
-              className="input w-auto min-w-[100px]"
+              className="select-field min-w-[130px]"
             >
-              <option value={7}>7 days</option>
-              <option value={14}>14 days</option>
-              <option value={30}>30 days</option>
-              <option value={90}>90 days</option>
+              <option value={7}>Last 7 days</option>
+              <option value={14}>Last 14 days</option>
+              <option value={30}>Last 30 days</option>
+              <option value={90}>Last 90 days</option>
             </select>
           </label>
         </div>

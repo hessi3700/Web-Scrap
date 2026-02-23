@@ -17,14 +17,17 @@ export default function AreaBarChart({ data, height = 220 }: { data: AreaCount[]
 
     const svg = svgRef.current;
     const width = svg.clientWidth || 400;
-    const margin = { top: 12, right: 12, bottom: 28, left: 52 };
+    const margin = { top: 12, right: 24, bottom: 28, left: 52 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
     const maxCount = Math.max(...data.map((d) => d.count), 1);
-    const xScale = (i: number) => (i / Math.max(data.length - 1, 1)) * innerWidth;
+    const n = Math.min(data.length, MAX_BARS);
+    const slotWidth = n > 0 ? innerWidth / n : 0;
+    const barWidth = Math.max(6, Math.min(slotWidth * 0.7, slotWidth - 4));
     const yScale = (v: number) => innerHeight - (v / maxCount) * innerHeight;
-    const barWidth = Math.max(6, (innerWidth / data.length) * 0.7);
+    const barCenterX = (i: number) => (i + 0.5) * slotWidth;
+    const barLeft = (i: number) => barCenterX(i) - barWidth / 2;
 
     // Clear previous
     while (svg.firstChild) svg.removeChild(svg.firstChild);
@@ -55,9 +58,9 @@ export default function AreaBarChart({ data, height = 220 }: { data: AreaCount[]
       g.appendChild(text);
     });
 
-    // Bars (D3-style manual layout)
+    // Bars (D3-style manual layout) - slot-based so last bar stays in bounds
     data.slice(0, MAX_BARS).forEach((d, i) => {
-      const x = xScale(i) + (innerWidth / Math.max(data.length, 1) - barWidth) / 2;
+      const x = Math.max(0, barLeft(i));
       const barH = innerHeight - yScale(d.count);
       const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
       rect.setAttribute("x", String(x));
@@ -76,9 +79,9 @@ export default function AreaBarChart({ data, height = 220 }: { data: AreaCount[]
       g.appendChild(rect);
     });
 
-    // X labels
+    // X labels - centered in slot, clamped to stay in bounds
     data.slice(0, MAX_BARS).forEach((d, i) => {
-      const x = xScale(i) + (innerWidth / Math.max(data.length, 1)) / 2;
+      const x = Math.min(innerWidth - 4, Math.max(4, barCenterX(i)));
       const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
       text.setAttribute("x", String(x));
       text.setAttribute("y", String(innerHeight + 18));

@@ -25,23 +25,23 @@ export default function Listings() {
         <p className="mt-1 text-surface-400">Scraped listings with price history</p>
       </div>
 
-      <div className="flex flex-wrap gap-4">
-        <label className="flex items-center gap-2">
-          <span className="text-surface-400 text-sm">Area</span>
-          <select value={area} onChange={(e) => setArea(e.target.value)} className="input w-auto min-w-[160px]">
-            <option value="">All</option>
+      <div className="flex flex-wrap items-end gap-6">
+        <label className="filter-label">
+          <span>Area</span>
+          <select value={area} onChange={(e) => setArea(e.target.value)} className="select-field min-w-[180px]">
+            <option value="">All areas</option>
             {areas.map((a) => (
               <option key={a} value={a}>{a}</option>
             ))}
           </select>
         </label>
-        <label className="flex items-center gap-2">
-          <span className="text-surface-400 text-sm">Date</span>
+        <label className="filter-label">
+          <span>Recorded date</span>
           <input
             type="date"
             value={recordedAt}
             onChange={(e) => setRecordedAt(e.target.value)}
-            className="input w-auto min-w-[140px]"
+            className="date-field min-w-[160px]"
           />
         </label>
       </div>
